@@ -1,6 +1,9 @@
 package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
+
+import java.sql.SQLOutput;
 
 public class ProductBasket {
     private Product[] productBasket = new Product[5];
@@ -42,7 +45,7 @@ public class ProductBasket {
     //проверка наличия товара в корзине по названию
     public boolean checkProductInBasket(String nameOfProduct) {
         for (int i = 0; i < productBasket.length; i++) {
-            if (productBasket[i] != null && productBasket[i].getName("name").equals(nameOfProduct)) {
+            if (productBasket[i] != null && productBasket[i].getName().equals(nameOfProduct)) {
                 return true;
             }
         }

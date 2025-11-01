@@ -17,9 +17,13 @@ public class FixPriceProduct extends Product {
     public boolean isSpecial() {
         return true;
     }
+    public String function;
 
     @Override
     public String toString() {
-        return getName("name") + ": Фиксированная цена - " + FIX_PRICE;
+        return "FixPriceProduct{" +
+                "function='" + function + '\'' +
+                ", function='" + function + '\'' +
+                '}';
     }
 }
