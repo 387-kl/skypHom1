@@ -2,48 +2,49 @@ package org.skypro.skyshop.search;
 
 import org.skypro.skyshop.exeption.BestResultNotFound;
 
+import java.util.*;
+
 public class SearchEngine {
 
-    private Searchable[] searchables;
-    private int currentIndex = 0;
-    public SearchEngine(int capacity) {
-        this.searchables = new Searchable[capacity];
-    }
-    public void add(Searchable searchable) {
-        if (currentIndex < searchables.length) {
-            searchables[currentIndex] = searchable;
-            currentIndex++;
-        } else {
-            System.out.println("Массив заполнен");
-        }
-    }
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
-        int count = 0;
-        for (Searchable searchable : searchables) {
-            if (searchable != null && searchable.getSearchTerm().contains(query)) {
-                results[count] = searchable; // Добавляем в результаты
-                count++;
+    private Set<Searchable> searchables = new HashSet<>();
 
-                if (count == 5) {
-                    break;
+    public void add(Searchable searchable) {
+        searchables.add(searchable);
+    }
+
+    // поиск в Searchable объектах по строке
+    public Set<Searchable> search(String query) {
+
+        Set<Searchable> searchableSet = new TreeSet<>(new Comparator<Searchable>() {
+            @Override
+            public int compare(Searchable o1, Searchable o2) {
+                    if (o1.getName().length() - o2.getName().length() == 0) {
+                        return  o1.getName().compareTo(o2.getName());
+                    }
+
+                    return o1.getName().length() - o2.getName().length();
+                }
+            });
+
+            for (Searchable searchable : searchables) {
+
+                if (searchable.getSearchTerm().contains(query)) {
+                    searchableSet.add(searchable); // Добавляем в результаты
                 }
             }
+            return searchableSet;
         }
 
-        return results;
-    }
 
-    public Searchable search2(String substring) {
-        int count = 0;
-        Searchable result = null;
-        for (Searchable a : searchables) {
-            if (a != null) {
+        // поиск Searchable объекта в котором больше всего встречается поисковая строка
+        public Searchable search2(String substring) {
+            int count = 0;
+            Searchable result = null;
+            for (Searchable a : searchables) {
                 String str = a.getSearchTerm();
                 int quantity = 0;
                 int index = 0;
                 int indexString = str.indexOf(substring, index);
-
                 while (indexString != -1) {
                     quantity++;
                     index = indexString + substring.length();
@@ -54,15 +55,13 @@ public class SearchEngine {
                     result = a;
                 }
             }
-        }
-
-        if (result == null) {
-            try {
-                throw new BestResultNotFound(substring);
-            } catch (BestResultNotFound e) {
-                System.out.println(e.getMessage());
+            if (result == null) {
+                try {
+                    throw new BestResultNotFound(substring);
+                } catch (BestResultNotFound e) {
+                    System.out.println(e.getMessage());
+                }
             }
+            return result;
         }
-        return result;
     }
-}
