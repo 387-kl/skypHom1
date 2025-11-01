@@ -1,6 +1,8 @@
 package org.skypro.skyshop.search;
 
 import org.skypro.skyshop.exeption.BestResultNotFound;
+import org.skypro.skyshop.product.SimpleProduct;
+
 import java.util.*;
 
 public class SearchEngine {
@@ -27,28 +29,27 @@ public class SearchEngine {
         int count = 0;
         Searchable result = null;
         for (Searchable a : searchables) {
-            String str = a.getSearchTerm();
-            int quantity = 0;
-            int index = 0;
-            int indexString = str.indexOf(substring, index);
-
-            while (indexString != -1) {
-                quantity++;
-                index = indexString + substring.length();
-                indexString = str.indexOf(substring, index);
+                String str = a.getSearchTerm();
+                int quantity = 0;
+                int index = 0;
+                int indexString = str.indexOf(substring, index);
+                while (indexString != -1) {
+                    quantity++;
+                    index = indexString + substring.length();
+                    indexString = str.indexOf(substring, index);
+                }
+                if (quantity > count) {
+                    count = quantity;
+                    result = a;
+                }
             }
-            if (quantity > count) {
-                count = quantity;
-                result = a;
+            if (result == null) {
+                try {
+                    throw new BestResultNotFound(substring);
+                } catch (BestResultNotFound e) {
+                    System.out.println(e.getMessage());
+                }
             }
+            return result;
         }
-        if (result == null) {
-            try {
-                throw new BestResultNotFound(substring);
-            } catch (BestResultNotFound e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return result;
-    }
 }
