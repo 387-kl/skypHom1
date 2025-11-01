@@ -12,7 +12,6 @@ public class App {
 
         //Демонстрация классов
         //Добавление продукта в корзину.
-        basket.addToBasket(new Product("", 100));
         basket.addToBasket(new SimpleProduct("egg", 100));
 
         //Заполнение корзины
@@ -26,5 +25,19 @@ public class App {
 
         //Печать содержимого корзины с несколькими товарами.
         basket.printProductsOfBasket();
+        //Получение стоимости корзины с несколькими товарами.
+        System.out.println(basket.getSumOfProducts());
+        //Поиск товара, который есть в корзине.
+        System.out.println(basket.checkProductInBasket("salt"));
+        //Поиск товара, которого нет в корзине.
+        System.out.println(basket.checkProductInBasket("carrot"));
+        //Очистка корзины.
+        basket.cleanBasket();
+        //Печать содержимого пустой корзины.
+        basket.printProductsOfBasket();
+        //Получение стоимости пустой корзины.
+        System.out.println(basket.getSumOfProducts());
+        //Поиск товара по имени в пустой корзине.
+        System.out.println(basket.checkProductInBasket("carrot"));
     }
 }
