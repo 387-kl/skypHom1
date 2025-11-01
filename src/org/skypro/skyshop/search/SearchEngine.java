@@ -1,28 +1,25 @@
 package org.skypro.skyshop.search;
 
 import org.skypro.skyshop.exeption.BestResultNotFound;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SearchEngine {
 
+    private Map<String, Searchable> searchableMap = new TreeMap<>();
     private List<Searchable> searchables = new ArrayList<>();
-
-    private int currentIndex = 0;
 
     public void add(Searchable searchable) {
         searchables.add(searchable);
     }
 
     // поиск в Searchable объектах по строке
-    public List<Searchable> search(String query) {
-        List<Searchable> results = new ArrayList<>();
+    public Map<String, Searchable> search(String query) {
         for (Searchable searchable : searchables) {
             if (searchable.getSearchTerm().contains(query)) {
-                results.add(searchable); // Добавляем в результаты
+                searchableMap.put(searchable.getName(),searchable); // Добавляем в результаты
             }
         }
-        return results;
+        return searchableMap;
     }
 
     // поиск Searchable объекта в котором больше всего встречается поисковая строка
